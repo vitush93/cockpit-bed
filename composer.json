@@ -1,0 +1,11 @@
+{
+  "name": "vitush93/cockpit-bed",
+  "license": "MIT",
+  "require": {
+    "php": ">=5.5.9",
+    "aheinze/cockpit": "0.13.*",
+    "aheinze/lime": "dev-master#6a4c37c0a503204d670da661e898b79b19f37a7b",
+    "latte/latte": "2.4.*",
+    "leafo/scssphp": "^0.6.7"
+  }
+}
