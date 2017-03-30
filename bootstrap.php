@@ -2,11 +2,38 @@
 
 require 'vendor/autoload.php';
 
-$app = new \Lime\App();
+$container = new \Slim\Container();
+$app = new \Slim\App($container);
 
-// setup latte templating engine
-$latte = new \Latte\Engine();
-$latte->setTempDirectory(__DIR__ . '/temp');
-$app['latte'] = $latte;
+$container['config'] = function ($container) {
+    return include 'config.php';
+};
+
+$container['dbconnection'] = function ($container) {
+    $dbConfig = $container['config']['database'];
+
+    return new \Nette\Database\Connection($dbConfig['dsn'], $dbConfig['user'], $dbConfig['password'], $dbConfig['options']);
+};
+
+$container['storage'] = function ($container) {
+    return new \Nette\Caching\Storages\FileStorage($container['config']['tempDir']);
+};
+
+$container['dbstructure'] = function ($container) {
+    return new \Nette\Database\Structure($container['dbconnection'], $container['storage']);
+};
+
+$container['db'] = function ($container) {
+    return new \Nette\Database\Context($container['dbconnection'], $container['dbstructure']);
+};
+
+$container['latte'] = function ($container) {
+    $tempDirectory = $container['config']['tempDir'];
+
+    $latte = new \Latte\Engine();
+    $latte->setTempDirectory($tempDirectory);
+
+    return $latte;
+};
 
 return $app;
