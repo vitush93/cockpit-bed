@@ -40,4 +40,12 @@ if (in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1'])) {
     $container['settings']['displayErrorDetails'] = true;
 }
 
+$container['lang'] = function ($container) {
+    if (isset($_SESSION['app']['lang'])) {
+        return $_SESSION['app']['lang'];
+    } else {
+        return $container['config']['langDefault'];
+    }
+};
+
 return $app;
