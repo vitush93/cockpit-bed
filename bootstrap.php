@@ -36,4 +36,8 @@ $container['latte'] = function ($container) {
     return $latte;
 };
 
+if (in_array($_SERVER['REMOTE_ADDR'], ['127.0.0.1', '::1'])) {
+    $container['settings']['displayErrorDetails'] = true;
+}
+
 return $app;
